@@ -1,8 +1,11 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
+
+var errSalary = errors.New("salary error")
 
 func main() {
 
@@ -10,7 +13,7 @@ func main() {
 
 	err := CalculateTax(salary)
 
-	if err != nil {
+	if errors.Is(err, errSalary) {
 		fmt.Println(err)
 		return
 	}
@@ -19,7 +22,7 @@ func main() {
 
 func CalculateTax(salary int) error {
 	if salary < 150000 {
-		return fmt.Errorf("error: the minimum taxable amount is 150,000 and the salary entered is: %d", salary)
+		return fmt.Errorf("%w: the minimum taxable amount is 150,000 and the salary entered is: %d", errSalary, salary)
 	}
 	fmt.Println("Must pay tax")
 	return nil
